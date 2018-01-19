@@ -68,7 +68,11 @@ expected = {
     }
 }
 assert response == expected
+```
 
+You can even query for several commands at once:
+
+```python
 response = api.query({"some_other_command": None, "and_yet_another": None})
 expected = {
     "meta": {
