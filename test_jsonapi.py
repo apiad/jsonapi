@@ -1,6 +1,6 @@
 # coding: utf8
 
-from jsonapi import JsonApi
+from jsonapi import JsonApi, JsonObj
 
 
 class HelloWorld(JsonApi):
@@ -11,14 +11,9 @@ class HelloWorld(JsonApi):
 def test_hello_world():
     api = HelloWorld()
 
-    response = api.query({"hello": None})
+    response = api({"hello": None})
     expected = {
-        "meta": {
-            "error": None
-        },
-        "payload": {
-            "hello": "world!"
-        }
+        "hello": "world!"
     }
     assert response == expected
 
@@ -37,25 +32,77 @@ class MultipleCommands(JsonApi):
 def test_multiple_commands():
     api = MultipleCommands()
 
-    response = api.query({"some_command": None})
+    response = api({"some_command": None})
     expected = {
-        "meta": {
-            "error": None
-        },
-        "payload": {
-            "some_command": "there you go"
-        }
+        "some_command": "there you go"
     }
     assert response == expected
 
-    response = api.query({"some_other_command": None, "and_yet_another": None})
+    response = api({"some_other_command": None, "and_yet_another": None})
     expected = {
-        "meta": {
-            "error": None
-        },
-        "payload": {
-            "some_other_command": 42,
-            "and_yet_another": True
+        "some_other_command": 42,
+        "and_yet_another": True
+    }
+    assert response == expected
+
+
+class StarWars(JsonApi):
+    def characters(self):
+        return [luke, leia, han]
+
+
+class Character(JsonObj):
+    def __init__(self, name, lastname):
+        self.name = name
+        self.lastname = lastname
+
+    def fullname(self):
+        return self.name + " " + self.lastname
+
+    def friends(self):
+        return FRIENDS[self]
+
+
+luke = Character(name="Luke", lastname="Skywalker")
+leia = Character(name="Leia", lastname="Skywalker")
+han = Character(name="Han", lastname="Solo")
+
+FRIENDS = {
+    luke: [han, leia],
+    leia: [luke],
+    han: [luke],
+}
+
+
+def test_jsonobj():
+    api = StarWars()
+
+    response = api({
+        'characters': None
+    })
+    expected = {
+        'characters': [
+            {'name': 'Luke', 'lastname': 'Skywalker'},
+            {'name': 'Leia', 'lastname': 'Skywalker'},
+            {'name': 'Han', 'lastname': 'Solo'},
+        ]
+    }
+    assert response == expected
+
+
+def test_call_method():
+    api = StarWars()
+
+    response = api({
+        'characters': {
+            'fullname': None
         }
+    })
+    expected = {
+        'characters': [
+            {'fullname': 'Luke Skywalker'},
+            {'fullname': 'Leia Skywalker'},
+            {'fullname': 'Han Solo'},
+        ]
     }
     assert response == expected

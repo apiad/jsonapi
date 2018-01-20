@@ -3,34 +3,45 @@
 import json
 
 
-class JsonApi:
-    def _query(self, data):
+class JsonObj:
+    def _json(self, x, query):
+        if isinstance(x, (int, float, str)):
+            return x
+        if isinstance(x, (list, tuple)):
+            return [self._json(i, query) for i in x]
+        if isinstance(x, dict):
+            return { str(k): self._json(v) for k,v in x.items() }
+        if isinstance(x, JsonObj):
+            return x._query(query)
+        raise TypeError("type %s is not supported" % type(x))
+
+    def _query(self, query):
+        if query is None:
+            return {k: v for k, v in self.__dict__.items() if not hasattr(v, '__call__')}
+
         payload = {}
 
-        for k,v in data.items():
-            method = getattr(self, k)
+        for k,v in query.items():
+            attr = getattr(self, k)
 
-            if v is None:
-                payload[k] = method()
+            if hasattr(attr, '__call__'):
+                args = {}
+                navigation = v
+                result = attr(**args)
             else:
-                payload[k] = method(v)
+                result = attr
+
+            payload[k] = self._json(result, navigation)
 
         return payload
 
-    def query(self, data, encode=False):
-        if isinstance(data, str):
-            data = json.loads(data)
 
-        try:
-            result = dict(
-                meta=dict(error=None),
-                payload=self._query(data),
-            )
-        except Exception as e:
-            result = dict(
-                meta=dict(error=str(e)),
-                payload=None,
-            )
+class JsonApi(JsonObj):
+    def __call__(self, query, encode=False):
+        if isinstance(query, str):
+            query = json.loads(query)
+
+        result = self._query(query),
 
         if encode:
             return json.dumps(result)

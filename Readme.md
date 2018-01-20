@@ -12,7 +12,7 @@
 
 ## The basics
 
-To illustrate the usage is best to start with an example. The main and only class in **jsonapi** is (wait for it...) `JsonApi`, which defines all the available commands in the API as public methods:
+To illustrate the usage is best to start with an example. The main class in **jsonapi** is (wait for it...) `JsonApi`, which defines all the available commands in the API as public methods:
 
 ```python
 from jsonapi import JsonApi
@@ -81,6 +81,83 @@ expected = {
     "payload": {
         "some_other_command": 42,
         "and_yet_another": True
+    }
+}
+assert response == expected
+```
+
+## Navigating complex responses
+
+The coolest part of **jsonapi** is how can extend you API with commands that return full featured classes, which expose commands themselves. This way you can create a complex structure and let the query describe exactly what to get. First let's define a slightly more complex API. Here we are simulating a small database:
+
+```python
+from jsonapi import JsonApi, JsonObj
+
+class StarWars(JsonApi):
+    def characters(self):
+        return [luke, leia, han]
+
+class Character(JsonObj):
+    def __init__(self, name, lastname):
+        self.name = name
+        self.lastname = lastname
+
+    def fullname(self):
+        return self.name + self.lastname
+
+    def friends(self):
+        return FRIENDS[self]
+
+luke = Character(name="Luke", lastname="Skywalker")
+leia = Character(name="Leia", lastname="Skywalker")
+han = Character(name="Han", lastname="Solo")
+
+FRIENDS = {
+    luke: [han, leia],
+    leia: [luke],
+    han: [luke],
+}
+```
+
+Now we can query this API as usual:
+
+```python
+api = StarWars()
+
+response = api.query({
+    'characters': None
+})
+expected = {
+    'meta': { 'error': None },
+    'payload': {
+        'characters': [
+            {'name': 'Luke', 'lastname': 'Skywalker' },
+            {'name': 'Leia', 'lastname': 'Skywalker' },
+            {'name': 'Han', 'lastname': 'Solo' },
+        ]
+    }
+}
+assert response == expected
+```
+
+By default, we'll receive as response the JSON representation of the objects, built out of their attributes (only those which are JSON serializable, of course). This magic is done by the `JsonObj` class, so make sure to always inherit this class for the types you want to expose in the API.
+
+However, we can also build more complex queries, that allow us to shape the response. For instance, we can query for a specific attribute or method:
+
+```python
+response = api.query({
+    'characters': {
+        'fullname': None
+    }
+})
+expected = {
+    'meta': { 'error': None },
+    'payload': {
+        'characters': [
+            {'fullname': 'Luke Skywalker' },
+            {'fullname': 'Leia Skywalker' },
+            {'fullname': 'Han Solo' },
+        ]
     }
 }
 assert response == expected
