@@ -35,6 +35,7 @@ Afterwards, create an instance of this API and call it's `query` method, passing
 
 >>> api({"the_answer": None})
 {'the_answer': 42}
+
 ```
 
 ## Moving on

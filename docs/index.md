@@ -36,17 +36,15 @@ Afterwards, create an instance of this API and call it's `query` method, passing
 
 >>> api({"the_answer": None})
 {'the_answer': 42}
+
 ```
 
-The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. Since we are dealing with standard JSON, we need to add that `None` value (or `null` is actual JSON), because they key cannot appear by itself. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint.
+The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. Since we are dealing with standard JSON, we need to add that `None` value (or `null` is actual JSON), because they key cannot appear by itself. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint. Then on the query, you decide which command to execute (which method to call):
 
 ```python
-response = api({"hello": None, "the_answer": None})
-expected = {
-    "hello": "world!",
-    "the_answer": 42
-}
-assert response == expected
+>>> api({"hello": None, "the_answer": None})
+{'hello': 'world!', 'the_answer': 42}
+
 ```
 
 The coolest part of **jsonapi** is how you can extend an API with commands that return full featured classes, which expose commands themselves. This way you can create a complex structure and let the query describe exactly what to get. First let's define a slightly more complex API. Here we are simulating a small database:

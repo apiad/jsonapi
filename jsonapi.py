@@ -41,7 +41,7 @@ class JsonApi(JsonObj):
         if isinstance(query, str):
             query = json.loads(query)
 
-        result = self._query(query),
+        result = self._query(query)
 
         if encode:
             return json.dumps(result)
