@@ -17,6 +17,7 @@ To illustrate the usage is best to start with an example. The main class in **js
 
 ```python
 >>> from jsonapi import JsonApi
+>>> from pprint import pprint
 
 >>> class HelloWorld(JsonApi):
 ...     def hello(self):
@@ -42,74 +43,72 @@ Afterwards, create an instance of this API and call it's `query` method, passing
 The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. Since we are dealing with standard JSON, we need to add that `None` value (or `null` is actual JSON), because they key cannot appear by itself. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint. Then on the query, you decide which command to execute (which method to call):
 
 ```python
->>> api({"hello": None, "the_answer": None})
+>>> response = api({"hello": None, "the_answer": None})
+>>> pprint(response)
 {'hello': 'world!', 'the_answer': 42}
 
 ```
 
+## Querying complex objects
+
 The coolest part of **jsonapi** is how you can extend an API with commands that return full featured classes, which expose commands themselves. This way you can create a complex structure and let the query describe exactly what to get. First let's define a slightly more complex API. Here we are simulating a small database:
 
 ```python
-from jsonapi import JsonApi, JsonObj
+>>> from jsonapi import JsonApi, JsonObj
 
-class StarWars(JsonApi):
-    def characters(self):
-        return [luke, leia, han]
+>>> class StarWars(JsonApi):
+...     def characters(self):
+...         return [luke, leia, han]
 
-class Character(JsonObj):
-    def __init__(self, name, lastname):
-        self.name = name
-        self.lastname = lastname
+>>> class Character(JsonObj):
+...     def __init__(self, name, lastname):
+...         self.name = name
+...         self.lastname = lastname
+...
+...     def fullname(self):
+...         return "%s %s" % (self.name, self.lastname)
+...
+...     def friends(self):
+...         return FRIENDS[self]
 
-    def fullname(self):
-        return self.name + self.lastname
+>>> luke = Character(name="Luke", lastname="Skywalker")
+>>> leia = Character(name="Leia", lastname="Skywalker")
+>>> han = Character(name="Han", lastname="Solo")
 
-    def friends(self):
-        return FRIENDS[self]
+>>> FRIENDS = {
+...     luke: [han, leia],
+...     leia: [luke],
+...     han: [luke],
+... }
 
-luke = Character(name="Luke", lastname="Skywalker")
-leia = Character(name="Leia", lastname="Skywalker")
-han = Character(name="Han", lastname="Solo")
-
-FRIENDS = {
-    luke: [han, leia],
-    leia: [luke],
-    han: [luke],
-}
 ```
 
 Now we can query this API as usual:
 
 ```python
-api = StarWars()
+>>> api = StarWars()
 
-response = api({ 'characters': None })
-expected = {
-    'characters': [
-        {'name': 'Luke', 'lastname': 'Skywalker' },
-        {'name': 'Leia', 'lastname': 'Skywalker' },
-        {'name': 'Han', 'lastname': 'Solo' },
-    ]
-}
-assert response == expected
+>>> response = api({ 'characters': None })
+>>> pprint(response)
+{'characters': [{'lastname': 'Skywalker', 'name': 'Luke'},
+                {'lastname': 'Skywalker', 'name': 'Leia'},
+                {'lastname': 'Solo', 'name': 'Han'}]}
+
 ```
 
 By default, we'll receive as response the JSON representation of the objects, built out of their attributes (only those which are JSON serializable, of course). This magic is done by the `JsonObj` class, so make sure to always inherit this class for the types you want to expose in the API.
 
-However, we can also build more complex queries, that allow us to shape the response. For instance, we can query for a specific attribute or method:
+However, we can also build more complex queries, that allow us to shape the response. For instance, we can query for a specific attribute (or method):
 
 ```python
-response = api.query({
-    'characters': {
-        'fullname': None
-    }
-})
-expected = {
-    'characters': [
-        {'fullname': 'Luke Skywalker' },
-        {'fullname': 'Leia Skywalker' },
-        {'fullname': 'Han Solo' },
-    ]
-}
-assert response == expected
+>>> response = api({
+...     'characters': {
+...         'fullname': None
+...     }
+... })
+>>> pprint(response)
+{'characters': [{'fullname': 'Luke Skywalker'},
+                {'fullname': 'Leia Skywalker'},
+                {'fullname': 'Han Solo'}]}
+
 ```
