@@ -1,1 +1,5 @@
+title: JSON-API
+description: A minimalistic JSON API framework in Python with **sparql**-inspired query syntax.
+show_downloads: true
+google_analytics:
 theme: jekyll-theme-hacker
