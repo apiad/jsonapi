@@ -10,107 +10,39 @@
 
     git clone https://github.com/apiad/jsonapi.git
 
-## The basics
+## Hello world
 
 To illustrate the usage is best to start with an example. The main class in **jsonapi** is (wait for it...) `JsonApi`, which defines all the available commands in the API as public methods:
 
 ```python
-from jsonapi import JsonApi
+>>> from jsonapi import JsonApi
 
-class HelloWorld(JsonApi):
-    def hello(self):
-        return "world!"
+>>> class HelloWorld(JsonApi):
+...     def hello(self):
+...         return "world!"
+...     def the_answer(self):
+...         return 42
 
-    def the_answer(self):
-        return 42
 ```
 
 Afterwards, create an instance of this API and call it's `query` method, passing along either a JSON-enconded string, or a pure Python dictionary:
 
 ```python
-api = HelloWorld()
+>>> api = HelloWorld()
 
-response = api({"hello": None})
-expected = {
-    "hello": "world!"
-}
-assert response == expected
+>>> api({"hello": None})
+{'hello': 'world!'}
+
+>>> api({"the_answer": None})
+{'the_answer': 42}
 ```
 
-The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. Since we are dealing with standard JSON, we need to add that `None` value (or `null` is actual JSON), because they key cannot appear by itself. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint.
+## Moving on
 
-```python
-response = api({"hello": None, "the_answer": None})
-expected = {
-    "hello": "world!",
-    "the_answer": 42
-}
-assert response == expected
-```
+There is much more that can be done with **jsonapi**, read the [documentation](/docs/index.md) to learn more.
 
-The coolest part of **jsonapi** is how you can extend an API with commands that return full featured classes, which expose commands themselves. This way you can create a complex structure and let the query describe exactly what to get. First let's define a slightly more complex API. Here we are simulating a small database:
+## Contributing
 
-```python
-from jsonapi import JsonApi, JsonObj
+Contributions are highly appreciated. Just fork and submit a pull request. All contributors will be granted credit on the following list:
 
-class StarWars(JsonApi):
-    def characters(self):
-        return [luke, leia, han]
-
-class Character(JsonObj):
-    def __init__(self, name, lastname):
-        self.name = name
-        self.lastname = lastname
-
-    def fullname(self):
-        return self.name + self.lastname
-
-    def friends(self):
-        return FRIENDS[self]
-
-luke = Character(name="Luke", lastname="Skywalker")
-leia = Character(name="Leia", lastname="Skywalker")
-han = Character(name="Han", lastname="Solo")
-
-FRIENDS = {
-    luke: [han, leia],
-    leia: [luke],
-    han: [luke],
-}
-```
-
-Now we can query this API as usual:
-
-```python
-api = StarWars()
-
-response = api({ 'characters': None })
-expected = {
-    'characters': [
-        {'name': 'Luke', 'lastname': 'Skywalker' },
-        {'name': 'Leia', 'lastname': 'Skywalker' },
-        {'name': 'Han', 'lastname': 'Solo' },
-    ]
-}
-assert response == expected
-```
-
-By default, we'll receive as response the JSON representation of the objects, built out of their attributes (only those which are JSON serializable, of course). This magic is done by the `JsonObj` class, so make sure to always inherit this class for the types you want to expose in the API.
-
-However, we can also build more complex queries, that allow us to shape the response. For instance, we can query for a specific attribute or method:
-
-```python
-response = api.query({
-    'characters': {
-        'fullname': None
-    }
-})
-expected = {
-    'characters': [
-        {'fullname': 'Luke Skywalker' },
-        {'fullname': 'Leia Skywalker' },
-        {'fullname': 'Han Solo' },
-    ]
-}
-assert response == expected
-```
+* Alejandro Piad ([@apiad](https://github.com/apiad))
