@@ -42,13 +42,13 @@ class JsonObj:
 
 
 class JsonApi(JsonObj):
-    def __call__(self, query, encode=False):
+    def __call__(self, query, encode=False, **kw):
         if isinstance(query, str):
             query = json.loads(query)
 
         result = self._query(query)
 
         if encode:
-            return json.dumps(result)
+            return json.dumps(result, **kw)
 
         return result
