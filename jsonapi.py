@@ -21,12 +21,17 @@ class JsonObj:
 
         payload = {}
 
-        for k,v in query.items():
+        if isinstance(query, dict):
+            items = query.items()
+        else:
+            items = [(k, None) for k in query]
+
+        for k,v in items:
             attr = getattr(self, k)
+            args = {}
+            navigation = v
 
             if hasattr(attr, '__call__'):
-                args = {}
-                navigation = v
                 result = attr(**args)
             else:
                 result = attr

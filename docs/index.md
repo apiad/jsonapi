@@ -32,18 +32,18 @@ Afterwards, create an instance of this API and call it's `query` method, passing
 ```python
 >>> api = HelloWorld()
 
->>> api({"hello": None})
+>>> api({"hello"})
 {'hello': 'world!'}
 
->>> api({"the_answer": None})
+>>> api({"the_answer"})
 {'the_answer': 42}
 
 ```
 
-The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. Since we are dealing with standard JSON, we need to add that `None` value (or `null` is actual JSON), because they key cannot appear by itself. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint. Then on the query, you decide which command to execute (which method to call):
+The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint. Then on the query, you decide which command to execute (which method to call):
 
 ```python
->>> response = api({"hello": None, "the_answer": None})
+>>> response = api({"hello", "the_answer"})
 >>> pprint(response)
 {'hello': 'world!', 'the_answer': 42}
 
@@ -88,7 +88,7 @@ Now we can query this API as usual:
 ```python
 >>> api = StarWars()
 
->>> response = api({ 'characters': None })
+>>> response = api({ 'characters' })
 >>> pprint(response)
 {'characters': [{'lastname': 'Skywalker', 'name': 'Luke'},
                 {'lastname': 'Skywalker', 'name': 'Leia'},
@@ -103,7 +103,7 @@ However, we can also build more complex queries, that allow us to shape the resp
 ```python
 >>> response = api({
 ...     'characters': {
-...         'fullname': None
+...         'fullname'
 ...     }
 ... })
 >>> pprint(response)
@@ -112,3 +112,22 @@ However, we can also build more complex queries, that allow us to shape the resp
                 {'fullname': 'Han Solo'}]}
 
 ```
+
+And of course, this can be applied recursively *ad infinitum*:
+
+```python
+>>> response = api({
+...     'characters': {
+...         'name': None,
+...         'friends': { 'name' }
+...     }
+... })
+>>> pprint(response)
+{'characters': [{'friends': [{'name': 'Han'}, {'name': 'Leia'}],
+                 'name': 'Luke'},
+                {'friends': [{'name': 'Luke'}], 'name': 'Leia'},
+                {'friends': [{'name': 'Luke'}], 'name': 'Han'}]}
+
+```
+
+**NOTE** that we had to write `"name": None`, otherwise it wouldn't have been a valid Python expression, since we'd be mixing set syntax and dictionary syntax in the same key. Sadly, in pure JSON we don't have sets, so we'll either have to either set the value `none` to the keys which are final, or use a list syntax instead.
