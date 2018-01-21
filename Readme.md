@@ -18,22 +18,22 @@ To illustrate the usage is best to start with an example. The main class in **js
 >>> from jsonapi import JsonApi
 
 >>> class HelloWorld(JsonApi):
+...     def __init__(self):
+...         self.the_answer = 42
 ...     def hello(self):
 ...         return "world!"
-...     def the_answer(self):
-...         return 42
 
 ```
 
-Afterwards, create an instance of this API and call it's `query` method, passing along either a JSON-enconded string, or a pure Python dictionary:
+Afterwards, create an instance of this API and call it, passing along either a JSON-enconded string, or a pure Python dictionary, to query either methods or attributes:
 
 ```python
 >>> api = HelloWorld()
 
->>> api({"hello": None})
+>>> api({"hello"})
 {'hello': 'world!'}
 
->>> api({"the_answer": None})
+>>> api({"the_answer"})
 {'the_answer': 42}
 
 ```

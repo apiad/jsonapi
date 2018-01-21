@@ -27,7 +27,7 @@ To illustrate the usage is best to start with an example. The main class in **js
 
 ```
 
-Afterwards, create an instance of this API and call it's `query` method, passing along either a JSON-enconded string, or a pure Python dictionary:
+Afterwards, create an instance of this API and call it, passing along either a JSON-enconded string, or a pure Python dictionary:
 
 ```python
 >>> api = HelloWorld()
