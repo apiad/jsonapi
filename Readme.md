@@ -1,4 +1,4 @@
-# jsonapi  ![travic-ci](https://travis-ci.org/apiad/jsonapi.svg?branch=master)
+# jsonapi  [![Build Status](https://travis-ci.org/apiad/jsonapi.svg?branch=master)](https://travis-ci.org/apiad/jsonapi)
 
 
 > A minimalistic JSON API framework in Python with support for **graphql**-style queries.
