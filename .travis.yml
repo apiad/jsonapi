@@ -2,6 +2,11 @@ language: python
 python:
   - "3.4"
   - "3.5"
-  - "3.6"  
+  - "3.6"
+before_install:
+    - pip install pytest pytest-cov
+    - pip install coveralls
 script:
-  - pytest
+    - py.test
+after_success:
+    - coveralls
