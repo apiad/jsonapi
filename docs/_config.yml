@@ -1,4 +1,4 @@
-title: JSON-API
+title: jsonapi
 description: A minimalistic JSON API framework in Python with support for graphql-inspired queries.
 show_downloads: true
 google_analytics:
