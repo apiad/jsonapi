@@ -2,122 +2,119 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+# jsonapi
 
-[Link to another page](another-page).
+> A minimalistic JSON API framework in Python with support for **graphql**-style queries.
 
-There should be whitespace between paragraphs.
+**jsonapi** is heavily inspired by [graphql](https://graphql.org), but aimed at a much simpler use case. The idea is to have a minimal framework for easily building JSON based APIs, that doesn't require any particular frontend technology. The design is inspired in **graphql**'s idea of a single fully customizable endpoint, but instead of defining a specific query language, **jsonapi** is entirely based on JSON both for the query and the response, requires much less boilerplate code, only works in Python, and of course, is much less battle-tested. If you find **graphql** amazing but would like to try a decaffeinated version that you can setup in 10 lines, then give **jsonapi** a shoot.
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+## Instalation
 
-# [](#header-1)Header 1
+**jsonapi** is a single Python file with no dependencies that you can just clone and distribute with your project's source code:
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+    git clone https://github.com/apiad/jsonapi.git
 
-## [](#header-2)Header 2
+## The basics
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
+To illustrate the usage is best to start with an example. The main class in **jsonapi** is (wait for it...) `JsonApi`, which defines all the available commands in the API as public methods:
 
-### [](#header-3)Header 3
+```python
+from jsonapi import JsonApi
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
+class HelloWorld(JsonApi):
+    def hello(self):
+        return "world!"
+
+    def the_answer(self):
+        return 42
+```
+
+Afterwards, create an instance of this API and call it's `query` method, passing along either a JSON-enconded string, or a pure Python dictionary:
+
+```python
+api = HelloWorld()
+
+response = api({"hello": None})
+expected = {
+    "hello": "world!"
+}
+assert response == expected
+```
+
+The way to invoke a particular command is to add it in the query JSON body, much like in **graphql**. Since we are dealing with standard JSON, we need to add that `None` value (or `null` is actual JSON), because they key cannot appear by itself. The cool part is when we have several commands. Usually we would set up different endpoints, with a method registered for each different command. In **jsonapi** you simply write different methods, and set up a single endpoint.
+
+```python
+response = api({"hello": None, "the_answer": None})
+expected = {
+    "hello": "world!",
+    "the_answer": 42
+}
+assert response == expected
+```
+
+The coolest part of **jsonapi** is how you can extend an API with commands that return full featured classes, which expose commands themselves. This way you can create a complex structure and let the query describe exactly what to get. First let's define a slightly more complex API. Here we are simulating a small database:
+
+```python
+from jsonapi import JsonApi, JsonObj
+
+class StarWars(JsonApi):
+    def characters(self):
+        return [luke, leia, han]
+
+class Character(JsonObj):
+    def __init__(self, name, lastname):
+        self.name = name
+        self.lastname = lastname
+
+    def fullname(self):
+        return self.name + self.lastname
+
+    def friends(self):
+        return FRIENDS[self]
+
+luke = Character(name="Luke", lastname="Skywalker")
+leia = Character(name="Leia", lastname="Skywalker")
+han = Character(name="Han", lastname="Solo")
+
+FRIENDS = {
+    luke: [han, leia],
+    leia: [luke],
+    han: [luke],
 }
 ```
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+Now we can query this API as usual:
+
+```python
+api = StarWars()
+
+response = api({ 'characters': None })
+expected = {
+    'characters': [
+        {'name': 'Luke', 'lastname': 'Skywalker' },
+        {'name': 'Leia', 'lastname': 'Skywalker' },
+        {'name': 'Han', 'lastname': 'Solo' },
+    ]
+}
+assert response == expected
 ```
 
-#### [](#header-4)Header 4
+By default, we'll receive as response the JSON representation of the objects, built out of their attributes (only those which are JSON serializable, of course). This magic is done by the `JsonObj` class, so make sure to always inherit this class for the types you want to expose in the API.
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+However, we can also build more complex queries, that allow us to shape the response. For instance, we can query for a specific attribute or method:
 
-##### [](#header-5)Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
+```python
+response = api.query({
+    'characters': {
+        'fullname': None
+    }
+})
+expected = {
+    'characters': [
+        {'fullname': 'Luke Skywalker' },
+        {'fullname': 'Leia Skywalker' },
+        {'fullname': 'Han Solo' },
+    ]
+}
+assert response == expected
 ```
