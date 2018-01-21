@@ -47,3 +47,20 @@ There is much more that can be done with **jsonapi**, read the [documentation](/
 Contributions are highly appreciated. Just fork and submit a pull request. All contributors will be granted credit on the following list:
 
 * Alejandro Piad ([@apiad](https://github.com/apiad))
+
+
+## Changelog
+
+### In the roadmap
+
+* Support for method's arguments, including complex objects
+* Support for some meta commands (e.g., list's count)
+* Support for operators ?? (e.g. exists, unsure about this)
+
+### v0.1
+
+* Basic layout of the API
+* Main features
+  * Simple attribute and method based navigation
+  * Automatic serialization to a JSON compatible object
+* Basic documentation
