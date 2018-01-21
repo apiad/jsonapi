@@ -48,7 +48,6 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 * Alejandro Piad ([@apiad](https://github.com/apiad))
 
-
 ## Changelog
 
 ### In the roadmap
