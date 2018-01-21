@@ -1,6 +1,5 @@
 # jsonapi  [![Travis](https://img.shields.io/travis/apiad/jsonapi.svg?style=flat-square)](https://travis-ci.org/apiad/jsonapi) [![Coveralls github](https://img.shields.io/coveralls/github/apiad/jsonapi.svg?style=flat-square)](https://coveralls.io/github/apiad/jsonapi?branch=master) [![GitHub tag](https://img.shields.io/github/tag/apiad/jsonapi.svg?style=flat-square)](https://github.com/apiad/jsonapi/releases)
 
-
 > A minimalistic JSON API framework in Python with support for **graphql**-style queries.
 
 **jsonapi** is heavily inspired by [graphql](https://graphql.org), but aimed at a much simpler use case. The idea is to have a minimal framework for easily building JSON based APIs, that doesn't require any particular frontend technology. The design is inspired in **graphql**'s idea of a single fully customizable endpoint, but instead of defining a specific query language, **jsonapi** is entirely based on JSON both for the query and the response, requires much less boilerplate code, only works in Python, and of course, is much less battle-tested. If you find **graphql** amazing but would like to try a decaffeinated version that you can setup in 10 lines, then give **jsonapi** a shot.
