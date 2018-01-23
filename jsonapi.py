@@ -4,8 +4,14 @@ import json
 
 
 class JsonObj:
+    def __init__(self, **kwargs):
+        for k,w in kwargs.items():
+            setattr(self, str(k), self._parse(w))
+
     def _json(self, x, query):
-        if isinstance(x, (int, float, str)):
+        if x is None:
+            return None
+        if isinstance(x, (int, float, str, bool)):
             return x
         if isinstance(x, (list, tuple)):
             return [self._json(i, query) for i in x]
@@ -15,36 +21,48 @@ class JsonObj:
             return x._query(query)
         raise TypeError("type %s is not supported" % type(x))
 
+    def _parse(self, x):
+        if x is None:
+            return None
+        if isinstance(x, (int, float, str, bool)):
+            return x
+        if isinstance(x, list):
+            return [self._parse(i) for i in x]
+        if isinstance(x, dict):
+            return JsonObj(**x)
+        raise TypeError("type %s is not supported" % type(x))
+
     def _query(self, query):
         if query is None:
-            return {k: v for k, v in self.__dict__.items() if not hasattr(v, '__call__')}
+            return {key: value for key, value in self.__dict__.items() if not hasattr(value, '__call__')}
 
         payload = {}
 
         if isinstance(query, dict):
             items = query.items()
         else:
-            items = [(k, None) for k in query]
+            items = [(key, None) for key in query]
 
-        for k,v in items:
-            attr = getattr(self, k)
+        for key, value in items:
+            attr = getattr(self, key)
             args = {}
-            navigation = v
+            navigation = value
 
-            if isinstance(v, dict):
-                if "$" in v:
-                    args = v.pop("$")
+            if isinstance(navigation, dict):
+                if "$" in navigation:
+                    args = { str(k): self._parse(v) for k,v in navigation.pop("$").items() }
                 else:
-                    for a in list(v.keys()):
+                    for a in list(navigation.keys()):
                         if a.startswith("$"):
-                            args[a.strip("$")] = v.pop(a)
+                            v = navigation.pop(a)
+                            args[a.strip("$")] = self._parse(v)
 
             if hasattr(attr, '__call__'):
                 result = attr(**args)
             else:
                 result = attr
 
-            payload[k] = self._json(result, navigation)
+            payload[key] = self._json(result, navigation)
 
         return payload
 

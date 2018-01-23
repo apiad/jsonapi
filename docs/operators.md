@@ -40,3 +40,20 @@ Default arguments are, of course, default:
 {'mult': 42}
 
 ```
+
+## Complex query args
+
+If your function receives a complex argument (i.e., a JSON dict), you will automatically receive a parsed `JsonObj` that you can manipulate with dot-notation access for attributes:
+
+```python
+>>> class ComplexArg(JsonApi):
+...     def process(self, x):
+...         return x.message.format(x.name)
+
+>>> api = ComplexArg()
+>>> api({ 'process': { '$x': { 'name': 'world', 'message': 'Hello {0}!'} }})
+{'process': 'Hello world!'}
+
+```
+
+You can read more about `JsonObj`'s magic tricks [here](/jsonobj.md).
