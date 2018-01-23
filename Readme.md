@@ -52,9 +52,13 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 ### In the roadmap
 
-* Support for method's arguments, including complex objects
 * Support for some meta commands (e.g., list's count)
 * Support for operators ?? (e.g. exists, unsure about this)
+* Support for method's arguments, including complex objects
+
+### v0.1.1
+
+* Suport for plain method arguments
 
 ### v0.1
 
