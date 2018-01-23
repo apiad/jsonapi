@@ -59,6 +59,10 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 * Support for operators ?? (e.g. exists, unsure about this)
 * Support for method's arguments, including complex objects
 
+### v0.1.2
+
+* Suport for complex method arguments (parsed via `JsonObj`)
+
 ### v0.1.1
 
 * Suport for plain method arguments
