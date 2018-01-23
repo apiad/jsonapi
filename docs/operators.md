@@ -4,6 +4,10 @@ layout: default
 
 # Operators
 
+When specifying a query, you have the option not only to declare the expected output structure, but also to specify input arguments and apply some query operators.
+
+## Function arguments
+
 The next thing you'll probably want is to pass some arguments to your functions. There are two ways to do this in **jsonapi**. The cannonical way is to add a key `"$"` with a dictionary of argument values:
 
 ```python
