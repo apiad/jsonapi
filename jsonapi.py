@@ -31,6 +31,14 @@ class JsonObj:
             args = {}
             navigation = v
 
+            if isinstance(v, dict):
+                if "$" in v:
+                    args = v.pop("$")
+                else:
+                    for a in list(v.keys()):
+                        if a.startswith("$"):
+                            args[a.strip("$")] = v.pop(a)
+
             if hasattr(attr, '__call__'):
                 result = attr(**args)
             else:

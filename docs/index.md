@@ -131,3 +131,8 @@ And of course, this can be applied recursively *ad infinitum*:
 ```
 
 **NOTE** that we had to write `"name": None`, otherwise it wouldn't have been a valid Python expression, since we'd be mixing set syntax and dictionary syntax in the same key. Sadly, in pure JSON we don't have sets, so we'll either have to either set the value `none` to the keys which are final, or use a list syntax instead.
+
+## Moving on
+
+With **jsonapi** you can also:
+* Pass [arguments](/operators.md) to functions
