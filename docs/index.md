@@ -134,5 +134,4 @@ And of course, this can be applied recursively *ad infinitum*:
 
 ## Moving on
 
-With **jsonapi** you can also:
-* Pass [arguments](/operators.md) to functions
+Keep reading about [operators](/operators.md)
