@@ -1,4 +1,4 @@
-# jsonapi  [![Travis](https://img.shields.io/travis/apiad/jsonapi.svg?style=flat-square)](https://travis-ci.org/apiad/jsonapi) [![Coveralls github](https://img.shields.io/coveralls/github/apiad/jsonapi.svg?style=flat-square)](https://coveralls.io/github/apiad/jsonapi?branch=master) [![GitHub tag](https://img.shields.io/github/tag/apiad/jsonapi.svg?style=flat-square&label=current%20version)](https://github.com/apiad/jsonapi/releases) ![Python versions](https://img.shields.io/badge/Python-3.4%2C%203.5%2C%203.6-blue.svg?style=flat-square)
+# jsonapi [![Travis](https://img.shields.io/travis/apiad/jsonapi.svg?style=flat-square)](https://travis-ci.org/apiad/jsonapi) [![Coveralls github](https://img.shields.io/coveralls/github/apiad/jsonapi.svg?style=flat-square)](https://coveralls.io/github/apiad/jsonapi?branch=master) [![GitHub tag](https://img.shields.io/github/tag/apiad/jsonapi.svg?style=flat-square&label=current%20version)](https://github.com/apiad/jsonapi/releases) ![Python versions](https://img.shields.io/badge/Python-3.4%2C%203.5%2C%203.6-blue.svg?style=flat-square)
 
 > A minimalistic JSON API framework in Python with support for **graphql**-style queries.
 
