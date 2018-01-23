@@ -41,7 +41,7 @@ Default arguments are, of course, default:
 
 ```
 
-## Complex query args
+## Complex function arguments
 
 If your function receives a complex argument (i.e., a JSON dict), you will automatically receive a parsed `JsonObj` that you can manipulate with dot-notation access for attributes:
 
