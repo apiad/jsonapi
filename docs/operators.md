@@ -24,7 +24,6 @@ The next thing you'll probably want is to pass some arguments to your functions.
 You can also use the  "lazy" way, which is simply to prepend `"$"` to all arguments:
 
 ```python
->>> api = Calculator()
 >>> api({ "sum": { "$a": 27, "$b": 15 } })
 {'sum': 42}
 
@@ -33,7 +32,6 @@ You can also use the  "lazy" way, which is simply to prepend `"$"` to all argume
 Default arguments are, of course, default:
 
 ```python
->>> api = Calculator()
 >>> api({ "mult": { "$a": 42 } })
 {'mult': 42}
 
