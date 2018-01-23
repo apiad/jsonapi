@@ -1,4 +1,4 @@
-# jsonapi  [![Travis](https://img.shields.io/travis/apiad/jsonapi.svg?style=flat-square)](https://travis-ci.org/apiad/jsonapi) [![Coveralls github](https://img.shields.io/coveralls/github/apiad/jsonapi.svg?style=flat-square)](https://coveralls.io/github/apiad/jsonapi?branch=master) [![GitHub tag](https://img.shields.io/github/tag/apiad/jsonapi.svg?style=flat-square&label=current%20version)](https://github.com/apiad/jsonapi/releases)
+# jsonapi  [![Travis](https://img.shields.io/travis/apiad/jsonapi.svg?style=flat-square)](https://travis-ci.org/apiad/jsonapi) [![Coveralls github](https://img.shields.io/coveralls/github/apiad/jsonapi.svg?style=flat-square)](https://coveralls.io/github/apiad/jsonapi?branch=master) [![GitHub tag](https://img.shields.io/github/tag/apiad/jsonapi.svg?style=flat-square&label=current%20version)](https://github.com/apiad/jsonapi/releases) ![Python versions](https://img.shields.io/badge/Python-3.4%2C%203.5%2C%203.6-blue.svg?style=flat-square)
 
 > A minimalistic JSON API framework in Python with support for **graphql**-style queries.
 
@@ -40,7 +40,10 @@ Afterwards, create an instance of this API and call it, passing along either a J
 
 ## Moving on
 
-There is more that can be done with **jsonapi**, read the [documentation](/docs/index.md) to learn more.
+There is more that can be done with **jsonapi**, read the [documentation](https://apiad.github.io/jsonapi/) to learn more:
+
+* Perform [structured queries](https://apiad.github.io/jsonapi/) with complex structure.
+* Pass [arguments](https://apiad.github.io/jsonapi/operators) to commands.
 
 ## Contributing
 
