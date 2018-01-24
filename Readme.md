@@ -50,9 +50,12 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 ### In the roadmap
 
-* Support for some meta commands (e.g., list's count)
 * Support for some fancy operators ?? (e.g. exists, unsure about this)
 * Support for typed arguments
+
+### V0.1.4
+
+* Support for some meta operators for lists (`_count` and `_items`).
 
 ### v0.1.3
 
