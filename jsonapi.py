@@ -23,7 +23,7 @@ class JsonObj:
             return None
         if isinstance(x, (int, float, str, bool)):
             return x
-        if isinstance(x, (list, tuple)):
+        if isinstance(x, (list, tuple, set)):
             return [self._json(i) for i in x]
         if isinstance(x, dict):
             return { str(k): self._json(v) for k,v in x.items() }
@@ -37,7 +37,7 @@ class JsonObj:
             return None
         if isinstance(x, (int, float, str, bool)):
             return x
-        if isinstance(x, list):
+        if isinstance(x, (list, tuple, set)):
             return [self._parse(i) for i in x]
         if isinstance(x, dict):
             return JsonObj(**x)
@@ -53,47 +53,39 @@ class JsonApi(JsonObj):
     def _query(self, obj, query):
         if obj is None:
             return None
-
         if isinstance(obj, (int, float, str, bool)):
             return obj
-
         if hasattr(obj, '__iter__'):
             return self._query_iter(obj, query)
-
         if isinstance(obj, dict):
             return {str(k): self._query(v, query) for k, v in obj.items()}
-
         if isinstance(obj, JsonObj):
             return self._query_obj(obj, query)
 
         raise TypeError("type %s is not supported" % type(x))
 
     def _query_iter(self, obj, query):
-        meta = self._extract(query, '_')
+        meta, query = self._extract(query, '_')
 
         if not meta:
             return [self._query(i, query) for i in obj]
 
         result = {}
 
-        for m in meta:
-            result["_%s" % m] = getattr(self, '_meta_%s' % m)(obj, query)
+        for m,v in meta.items():
+            result["_%s" % m] = getattr(self, '_meta_%s' % m)(obj, v)
 
         return result
 
     def _query_obj(self, obj, query):
-        if query is None:
-            return {key: value for key, value in obj.__dict__.items() if not hasattr(value, '__call__')}
+        if not query:
+            return obj.dict()
 
         payload = {}
 
-        if isinstance(query, dict): items = query.items()
-        else: items = [(key, None) for key in query]
-
-        for key, value in items:
+        for key, value in query.items():
             attr = getattr(obj, key)
-            query = value
-            args = self._extract(query, "$")
+            args, query = self._extract(value, "$", True)
 
             if hasattr(attr, '__call__'): result = attr(**args)
             else: result = attr
@@ -102,23 +94,23 @@ class JsonApi(JsonObj):
 
         return payload
 
-    def _extract(self, query, label):
-        if query is None:
-            return {}
-
-        if not isinstance(query, dict):
-            query = { k: None for k in query }
+    def _extract(self, query, label, parse=False):
+        if not query:
+            return {}, query
 
         if label in query:
-            return {str(k): self._parse(v) for k, v in query.pop(label).items()}
+            return query.pop(label), query
 
         args = {}
 
         for a in list(query):
             if a.startswith(label):
-                args[a.strip(label)] = self._parse(query.pop(a))
+                v = query.pop(a)
+                if parse:
+                    v = self._parse(v)
+                args[a.strip(label)] = v
 
-        return args
+        return args, query
 
     def _meta_count(self, obj, query):
         return len(obj)
@@ -126,10 +118,23 @@ class JsonApi(JsonObj):
     def _meta_items(self, obj, query):
         return [self._query(i, query) for i in obj]
 
+    def _parse_query(self, query):
+        if query is None:
+            return {}
+        if isinstance(query, (int, float, str, bool)):
+            return query
+        if isinstance(query, (list, tuple, set)):
+            return { str(i): None for i in query }
+        if isinstance(query, dict):
+            return { str(k): self._parse_query(v) for k,v in query.items() }
+
+        raise TypeError("type %s is not supported" % type(x))
+
     def __call__(self, query, encode=False, **kw):
         if isinstance(query, str):
             query = json.loads(query)
 
+        query = self._parse_query(query)
         result = self._query(self, query)
 
         if encode:

@@ -11,7 +11,7 @@ When specifying a query, you have the option not only to declare the expected ou
 The next thing you'll probably want is to pass some arguments to your functions. There are two ways to do this in **jsonapi**. The cannonical way is to add a key `"$"` with a dictionary of argument values:
 
 ```python
->>> from jsonapi import JsonApi
+>>> from jsonapi import JsonApi, JsonObj
 
 >>> class Calculator(JsonApi):
 ...     def sum(self, a, b):
@@ -86,5 +86,25 @@ Now the problem is that you lost the items themselves. Well, this can fixed by c
 >>> r = api({ 'elements': { '_count', '_items' }})
 >>> pprint(r)
 {'elements': {'_count': 10, '_items': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}}
+
+```
+
+If you need to define a sub-query on the items, and still need the count, you can add the query specification to the `_items` operator:
+
+```python
+>>> class ItemsApi(JsonApi):
+...     def elements(self):
+...         return [JsonObj(value=i, square=i*i) for i in range(5)]
+
+>>> api = ItemsApi()
+
+>>> r = api({ 'elements': { '_count': None, '_items': { 'square' } }})
+>>> pprint(r)
+{'elements': {'_count': 5,
+              '_items': [{'square': 0},
+                         {'square': 1},
+                         {'square': 4},
+                         {'square': 9},
+                         {'square': 16}]}}
 
 ```
