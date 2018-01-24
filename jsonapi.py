@@ -40,9 +40,6 @@ class JsonObj:
 
         raise TypeError("type %s is not supported" % type(x))
 
-    def __str__(self, **kw):
-        return json.dumps(self.dict(), **kw)
-
     @staticmethod
     def from_json(s):
         return JsonObj(**json.loads(s))
@@ -98,7 +95,6 @@ class JsonApi(JsonObj):
             return payload
 
         raise TypeError("type %s is not supported" % type(x))
-
 
     def __call__(self, query, encode=False, **kw):
         if isinstance(query, str):
