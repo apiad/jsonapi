@@ -25,7 +25,7 @@ The next thing you'll probably want is to pass some arguments to your functions.
 
 ```
 
-You can also use the  "lazy" way, which is simply to prepend `"$"` to all arguments:
+You can also use the "lazy" way, which is simply to prepend `"$"` to all arguments:
 
 ```python
 >>> api({ "sum": { "$a": 27, "$b": 15 } })
@@ -57,3 +57,34 @@ If your function receives a complex argument (i.e., a JSON dict), you will autom
 ```
 
 You can read more about `JsonObj`'s magic tricks [here](/jsonobj.md).
+
+## Collection operators
+
+For collections we have a couple interesting operators that return some aggregated information about the collection itself. These operators are used the same way as standard navigation, but their names start with `_`. In turn, these operators are not applied on the collection's content, but instead on the collection itself.
+
+The `_count` operator returns the number of items in the collection:
+
+```python
+>>> class CountApi(JsonApi):
+...     def elements(self):
+...         return list(range(10))
+
+>>> api = CountApi()
+>>> api({ 'elements' })
+{'elements': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+
+>>> api({ 'elements': { '_count' }})
+{'elements': {'_count': 10}}
+
+```
+
+Now the problem is that you lost the items themselves. Well, this can fixed by calling another operator `_items` which returns back the items of the collection:
+
+```python
+>>> from pprint import pprint
+
+>>> r = api({ 'elements': { '_count', '_items' }})
+>>> pprint(r)
+{'elements': {'_count': 10, '_items': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}}
+
+```
