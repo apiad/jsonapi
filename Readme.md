@@ -18,10 +18,8 @@ To illustrate the usage is best to start with an example. The main class in **js
 >>> from jsonapi import JsonApi
 
 >>> class HelloWorld(JsonApi):
-...     def __init__(self):
-...         self.the_answer = 42
-...     def hello(self):
-...         return "world!"
+...     def say(self, message, args):
+...         return message.format(args)
 
 ```
 
@@ -30,11 +28,8 @@ Afterwards, create an instance of this API and call it, passing along either a J
 ```python
 >>> api = HelloWorld()
 
->>> api({"hello"})
-{'hello': 'world!'}
-
->>> api({"the_answer"})
-{'the_answer': 42}
+>>> api({"say": { "$message": "Hello {0}!", "$args": "world" }})
+{'say': 'Hello world!'}
 
 ```
 
