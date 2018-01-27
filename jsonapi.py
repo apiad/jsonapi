@@ -4,8 +4,16 @@ import json
 
 
 class JsonObj:
-    def __init__(self, **kwargs):
-        for k,w in kwargs.items():
+    def __init__(self, data=None, **kwargs):
+        if isinstance(data, str):
+            data = json.loads(data)
+
+        if isinstance(data, dict):
+            data.update(**kwargs)
+        else:
+            data = kwargs
+
+        for k,w in data.items():
             setattr(self, str(k), self._parse(w))
 
     def dict(self):
@@ -44,12 +52,8 @@ class JsonObj:
 
         raise TypeError("type %s is not supported" % type(x))
 
-    @staticmethod
-    def from_json(s):
-        return JsonObj(**json.loads(s))
-
     def __repr__(self):
-        return "JsonObj(**%s)" % str(self.dict())
+        return "JsonObj(%s)" % str(self.dict())
 
 
 class JsonApi(JsonObj):
@@ -58,14 +62,14 @@ class JsonApi(JsonObj):
             return None
         if isinstance(obj, (int, float, str, bool)):
             return obj
-        if hasattr(obj, '__iter__'):
-            return self._query_iter(obj, query)
         if isinstance(obj, dict):
             return {str(k): self._query(v, query) for k, v in obj.items()}
+        if hasattr(obj, '__iter__'):
+            return self._query_iter(obj, query)
         if isinstance(obj, JsonObj):
             return self._query_obj(obj, query)
 
-        raise TypeError("type %s is not supported" % type(x))
+        raise TypeError("type %s is not supported" % type(obj))
 
     def _query_iter(self, obj, query):
         meta, query = self._extract(query, '_')
@@ -132,7 +136,7 @@ class JsonApi(JsonObj):
         if isinstance(query, dict):
             return { str(k): self._parse_query(v) for k,v in query.items() }
 
-        raise TypeError("type %s is not supported" % type(x))
+        raise TypeError("type %s is not supported" % type(query))
 
     def __call__(self, query, encode=False, **kw):
         if isinstance(query, str):

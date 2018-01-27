@@ -30,7 +30,7 @@ The opposite also works, i.e., you can create a `JsonObj` from a dictionary and 
 
 ```python
 >>> d = {'x': 5, 'y': {'z': [1, {'2': 3}, None]}}
->>> obj = JsonObj(**d)
+>>> obj = JsonObj(d)
 >>> obj.y.z[1].dict()
 {'2': 3}
 
@@ -40,7 +40,7 @@ You can also very easily load a JSON file and use it as an object:
 
 ```python
 >>> s = '{"x": 5, "y": {"z": [1, {"2": 3}, null]}}'
->>> obj = JsonObj.from_json(s)
+>>> obj = JsonObj(s)
 >>> obj.y.z[1].dict()
 {'2': 3}
 
