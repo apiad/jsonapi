@@ -48,6 +48,9 @@ class JsonObj:
     def from_json(s):
         return JsonObj(**json.loads(s))
 
+    def __repr__(self):
+        return "JsonObj(**%s)" % str(self.dict())
+
 
 class JsonApi(JsonObj):
     def _query(self, obj, query):
