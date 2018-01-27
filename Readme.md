@@ -52,7 +52,6 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 ### In the roadmap
 
-* Support for some fancy operators ?? (e.g. exists, unsure about this)
 * Support for typed arguments
 
 ### v0.2.0
