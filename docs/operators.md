@@ -108,3 +108,51 @@ If you need to define a sub-query on the items, and still need the count, you ca
                          {'square': 16}]}}
 
 ```
+
+Both of these operators also works with dictionary-like objects:
+
+```python
+>>> class DictApi(JsonApi):
+...     def elements(self):
+...         return {i: dict(square=i*i, cube=i*i*i) for i in range(5)}
+
+>>> api = DictApi()
+
+>>> r = api({ 'elements': { '_count': None, '_items': { 'square' } }})
+>>> pprint(r)
+{'elements': {'_count': 5,
+              '_items': {'0': {'square': 0},
+                         '1': {'square': 1},
+                         '2': {'square': 4},
+                         '3': {'square': 9},
+                         '4': {'square': 16}}}}
+
+```
+
+**NOTE** that using the `_items` operator on a `dict` is the only way to apply a
+sub-query on the values of the dictionary. If you wanted to do the previous query without
+`_items` this is what you would get an exception saying that there is no `square` key in
+the dictionary, and it's true, because the dictionary keys are `0`, `1`, etc.
+
+```python
+>>> try:
+...     r = api({ 'elements': { 'square' } })
+... except AttributeError as e:
+...     e
+AttributeError("'JsonObj' object has no attribute 'square'",)
+
+```
+
+You can also directly query for `_keys` and `_values` (using sub-queries to select inside the values):
+
+```python
+>>> r = api({'elements': { '_keys': None, '_values': {'cube'} }})
+>>> pprint(r)
+{'elements': {'_keys': [0, 1, 2, 3, 4],
+              '_values': [{'cube': 0},
+                          {'cube': 1},
+                          {'cube': 8},
+                          {'cube': 27},
+                          {'cube': 64}]}}
+
+```

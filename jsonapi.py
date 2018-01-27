@@ -48,7 +48,7 @@ class JsonObj:
         if isinstance(x, (list, tuple, set)):
             return [self._parse(i) for i in x]
         if isinstance(x, dict):
-            return JsonObj(**x)
+            return JsonObj(x)
 
         raise TypeError("type %s is not supported" % type(x))
 
@@ -63,7 +63,7 @@ class JsonApi(JsonObj):
         if isinstance(obj, (int, float, str, bool)):
             return obj
         if isinstance(obj, dict):
-            return {str(k): self._query(v, query) for k, v in obj.items()}
+            return self._query_dict(obj, query)
         if hasattr(obj, '__iter__'):
             return self._query_iter(obj, query)
         if isinstance(obj, JsonObj):
@@ -80,6 +80,19 @@ class JsonApi(JsonObj):
         result = {}
 
         for m,v in meta.items():
+            result["_%s" % m] = getattr(self, '_meta_%s' % m)(obj, v)
+
+        return result
+
+    def _query_dict(self, obj, query):
+        meta, query = self._extract(query, '_')
+
+        if not meta:
+            return self._query_obj(JsonObj(obj), query)
+
+        result = {}
+
+        for m, v in meta.items():
             result["_%s" % m] = getattr(self, '_meta_%s' % m)(obj, v)
 
         return result
@@ -124,7 +137,16 @@ class JsonApi(JsonObj):
         return len(obj)
 
     def _meta_items(self, obj, query):
-        return [self._query(i, query) for i in obj]
+        if isinstance(obj, list):
+            return [self._query(i, query) for i in obj]
+        if isinstance(obj, dict):
+            return {str(k): self._query(v, query) for k,v in obj.items()}
+
+    def _meta_keys(self, obj, query):
+        return list(obj.keys())
+
+    def _meta_values(self, obj, query):
+        return [self._query(v, query) for v in obj.values()]
 
     def _parse_query(self, query):
         if query is None:

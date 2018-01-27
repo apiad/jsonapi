@@ -8,6 +8,8 @@ layout: default
 
 ```python
 >>> from jsonapi import JsonObj
+>>> from pprint import pprint
+
 >>> obj = JsonObj()
 >>> obj.x = 5
 >>> obj.y = JsonObj()
@@ -20,7 +22,6 @@ layout: default
 The way this works is actually because `JsonObj` can be converted directly to a dictionary represenation, which can be later serialized as JSON (notice how keys are converted to their `str` representation automatically):
 
 ```python
->>> from pprint import pprint
 >>> pprint(obj.dict())
 {'x': 5, 'y': {'z': [1, {'2': 3}, None]}}
 
@@ -36,7 +37,7 @@ The opposite also works, i.e., you can create a `JsonObj` from a dictionary and 
 
 ```
 
-You can also very easily load a JSON file and use it as an object:
+You can also very easily load a JSON from a string (or file) and use it as an object:
 
 ```python
 >>> s = '{"x": 5, "y": {"z": [1, {"2": 3}, null]}}'
