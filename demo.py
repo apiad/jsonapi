@@ -1,6 +1,7 @@
 import flask
 from jsonapi import JsonApi, JsonObj
 
+
 app = flask.Flask(__name__)
 
 
