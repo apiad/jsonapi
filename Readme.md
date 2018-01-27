@@ -53,6 +53,10 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 ### In the roadmap
 
+* Automatic API documentation
+
+### v0.2.1
+
 * Support for typed arguments
 
 ### v0.2.0
