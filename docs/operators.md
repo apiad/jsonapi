@@ -156,3 +156,7 @@ You can also directly query for `_keys` and `_values` (using sub-queries to sele
                           {'cube': 64}]}}
 
 ```
+
+## Moving on
+
+Learn more about [adding type declarations](/types.md) to you api.

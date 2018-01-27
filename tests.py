@@ -90,3 +90,20 @@ def test_api_input_string():
     assert api(query) == expected_response
     assert api(query) == api(query_str)
     assert json.dumps(api(query), sort_keys=True) == api(query, encode=True, sort_keys=True)
+
+
+class Person(JsonObj):
+    def __init__(self, first_name, last_name):
+        super(Person, self).__init__(first_name=first_name, last_name=last_name)
+    def fullname(self):
+        return "%s %s" % (self.first_name, self.last_name)
+
+class PersonApi(JsonApi):
+    def name_it(self, person: Person):
+        return person.fullname()
+
+
+def test_parse_args():
+    api = PersonApi()
+    r = api({ 'name_it': {'$person': {'first_name': 'John',
+                                  'last_name': 'Doe' }}})

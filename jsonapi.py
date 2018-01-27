@@ -107,8 +107,12 @@ class JsonApi(JsonObj):
             attr = getattr(obj, key)
             args, query = self._extract(value, "$", True)
 
-            if hasattr(attr, '__call__'): result = attr(**args)
-            else: result = attr
+            if hasattr(attr, '__call__'):
+                if attr.__annotations__:
+                    args = self._convert(args, attr.__annotations__)
+                result = attr(**args)
+            else:
+                result = attr
 
             payload[key] = self._query(result, query)
 
@@ -131,6 +135,17 @@ class JsonApi(JsonObj):
                 args[a.strip(label)] = v
 
         return args, query
+
+    def _convert(self, args, annotations):
+        result = {}
+
+        for k,v in args.items():
+            if k in annotations:
+                result[k] = annotations[k](**v.dict())
+            else:
+                result[k] = v
+
+        return result
 
     @staticmethod
     def _meta_count(obj, query):
