@@ -57,11 +57,11 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 ### v0.2.1
 
-* Support for typed arguments
+* Support for typed arguments.
 
 ### v0.2.0
 
-* Support for meta operators in dictionaries (`_count`, `_items`, `_keys`, `_values`)
+* Support for meta operators in dictionaries (`_count`, `_items`, `_keys`, `_values`).
 * The `JsonObj` constructor now receives either `str`, `dict` or a `**kwargs` mapping.
 
 ### v0.1.4
@@ -82,8 +82,7 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 
 ### v0.1
 
-* Basic layout of the API
-* Main features
-  * Simple attribute and method based navigation
-  * Automatic serialization to a JSON compatible object
+* Basic layout of the API.
+* Simple attribute and method based navigation.
+* Automatic serialization to a JSON compatible object.
 * Basic documentation
