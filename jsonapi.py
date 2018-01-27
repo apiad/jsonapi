@@ -136,7 +136,8 @@ class JsonApi(JsonObj):
 
         return args, query
 
-    def _convert(self, args, annotations):
+    @staticmethod
+    def _convert(args, annotations):
         result = {}
 
         for k,v in args.items():
@@ -157,7 +158,8 @@ class JsonApi(JsonObj):
         if isinstance(obj, dict):
             return {str(k): self._query(v, query) for k,v in obj.items()}
 
-    def _meta_keys(self, obj, query):
+    @staticmethod
+    def _meta_keys(obj, query):
         return list(obj.keys())
 
     def _meta_values(self, obj, query):
