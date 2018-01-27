@@ -136,4 +136,4 @@ And of course, this can be applied recursively *ad infinitum*:
 
 Keep reading about [operators](/operators.md).
 
-<script src="/js/demo.js"></script>
+<script src="/jsonapi/js/demo.js"></script>
