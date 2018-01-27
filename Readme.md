@@ -55,7 +55,12 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 * Support for some fancy operators ?? (e.g. exists, unsure about this)
 * Support for typed arguments
 
-### V0.1.4
+### v0.2.0
+
+* Support for meta operators in dictionaries (`_count`, `_items`, `_keys`, `_values`)
+* The `JsonObj` constructor now receives either `str`, `dict` or a `**kwargs` mapping.
+
+### v0.1.4
 
 * Support for some meta operators for lists (`_count` and `_items`).
 
