@@ -135,3 +135,5 @@ And of course, this can be applied recursively *ad infinitum*:
 ## Moving on
 
 Keep reading about [operators](/operators.md).
+
+<script src="/js/demo.js"></script>
