@@ -37,8 +37,10 @@ Afterwards, create an instance of this API and call it, passing along either a J
 
 There is more that can be done with **jsonapi**, read the [documentation](https://apiad.github.io/jsonapi/) to learn more:
 
-* Perform [structured queries](https://apiad.github.io/jsonapi/#querying-complex-objects) with complex structure.
+* Perform [structured queries](https://apiad.github.io/jsonapi#querying-complex-objects) with complex structure.
 * Pass [arguments](https://apiad.github.io/jsonapi/operators#function-arguments) to commands.
+* Obtain [aggregated data](https://apiad.github.io/jsonapi/operators#collection-operators) from collections.
+* Manipulate [JSON data](https://apiad.github.io/jsonapi/jsonobj) with an object-oriented syntax.
 
 ## Contributing
 
