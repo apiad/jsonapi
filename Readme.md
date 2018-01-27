@@ -41,6 +41,7 @@ There is more that can be done with **jsonapi**, read the [documentation](https:
 * Pass [arguments](https://apiad.github.io/jsonapi/operators#function-arguments) to commands.
 * Obtain [aggregated data](https://apiad.github.io/jsonapi/operators#collection-operators) from collections.
 * Manipulate [JSON data](https://apiad.github.io/jsonapi/jsonobj) with an object-oriented syntax.
+* Get [type conversions](https://apiad.github.io/jsonapi/types) automatically for your API schema.
 
 ## Contributing
 
