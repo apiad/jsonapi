@@ -115,7 +115,8 @@ class JsonApi(JsonObj):
 
         return args, query
 
-    def _meta_count(self, obj, query):
+    @staticmethod
+    def _meta_count(obj, query):
         return len(obj)
 
     def _meta_items(self, obj, query):
