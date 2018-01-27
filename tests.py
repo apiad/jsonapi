@@ -99,11 +99,14 @@ class Person(JsonObj):
         return "%s %s" % (self.first_name, self.last_name)
 
 class PersonApi(JsonApi):
-    def name_it(self, person: Person):
-        return person.fullname()
+    def name_it(self, title, person: Person):
+        return "%s %s" % (title, person.fullname())
 
 
 def test_parse_args():
     api = PersonApi()
     r = api({ 'name_it': {'$person': {'first_name': 'John',
-                                  'last_name': 'Doe' }}})
+                                  'last_name': 'Doe' },
+                          '$title': 'Mr.'}})
+
+    assert r == {'name_it': 'Mr. John Doe'}
