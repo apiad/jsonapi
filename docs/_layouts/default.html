@@ -16,7 +16,11 @@
     </a>
 
     <section class="page-header">
-      <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
+      <h1 class="project-name">
+        <a href="https://apiad.github.io/jsonapi">
+         {{ site.title | default: site.github.repository_name }}
+        </a>
+      </h1>
 
       <a href="https://travis-ci.org/apiad/jsonapi" rel="nofollow">
         <img src="https://img.shields.io/travis/apiad/jsonapi.svg?style=flat-square" style="max-width:100%;">
