@@ -1,5 +1,5 @@
 (function() {
 
-
+$(".input").text("{ }");
 
 })()
