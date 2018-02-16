@@ -3,8 +3,6 @@ layout: default
 ---
 # Quickstart
 
-**jsonapi** is heavily inspired by [graphql](https://graphql.org), but aimed at a much simpler use case. The idea is to have a minimal framework for easily building JSON based APIs, that doesn't require any particular frontend technology. The design is inspired in **graphql**'s idea of a single fully customizable endpoint, but instead of defining a specific query language, **jsonapi** is entirely based on JSON both for the query and the response, requires much less boilerplate code, only works in Python, and of course, is much less battle-tested. If you find **graphql** amazing but would like to try a decaffeinated version that you can setup in 10 lines, then give **jsonapi** a shot.
-
 ## Installation
 
 **jsonapi** is a single Python file with no dependencies that you can just clone and distribute with your project's source code:
@@ -135,9 +133,3 @@ And of course, this can be applied recursively *ad infinitum*:
 ## Moving on
 
 Keep reading about [operators](/operators.md).
-
-<script
-  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
-  crossorigin="anonymous"></script>
-<script src="/jsonapi/assets/js/demo.js"></script>
