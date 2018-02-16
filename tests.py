@@ -93,10 +93,15 @@ def test_api_input_string():
 
 
 class Person(JsonObj):
-    def __init__(self, first_name, last_name):
+    first_name = ""
+    last_name = ""
+
+    def __init__(self, first_name: str, last_name: str):
         super(Person, self).__init__(first_name=first_name, last_name=last_name)
+
     def fullname(self):
         return "%s %s" % (self.first_name, self.last_name)
+
 
 class PersonApi(JsonApi):
     def name_it(self, title, person: Person):
@@ -106,7 +111,7 @@ class PersonApi(JsonApi):
 def test_parse_args():
     api = PersonApi()
     r = api({ 'name_it': {'$person': {'first_name': 'John',
-                                  'last_name': 'Doe' },
+                                      'last_name': 'Doe' },
                           '$title': 'Mr.'}})
 
     assert r == {'name_it': 'Mr. John Doe'}
