@@ -6,7 +6,13 @@
 
 ## Instalation
 
-**jsonapi** is a single Python file with no dependencies that you can just clone and distribute with your project's source code:
+The easiest installation is through `pip`. Unfortunately the cute name `jsonapi` was taken already in PyPi, so the project is registered under `jsonapi-simple`.
+
+```
+pip install jsonapi-simple
+```
+
+You can also just clone and distribute with your project's source code:
 
     git clone https://github.com/apiad/jsonapi.git
 
@@ -54,6 +60,10 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 ### In the roadmap
 
 * Automatic API documentation.
+
+### v0.2.2
+
+* Finally added to PyPi as [jsonapi-simple](https://pypi.org/project/jsonapi-simple/).
 
 ### v0.2.1
 

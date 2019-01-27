@@ -1,3 +1,2 @@
 [run]
-omit = tests.py
-       demo.py
+omit = jsonapi/tests.py

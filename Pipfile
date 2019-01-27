@@ -7,6 +7,9 @@ verify_ssl = true
 pytest = "*"
 pytest-cov = "*"
 coveralls = "*"
+setuptools = "*"
+wheel = "*"
+twine = "*"
 
 [packages]
 
