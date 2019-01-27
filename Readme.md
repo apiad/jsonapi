@@ -97,9 +97,29 @@ Contributions are highly appreciated. Just fork and submit a pull request. All c
 * Automatic serialization to a JSON compatible object.
 * Basic documentation.
 
+## Issues and bugs
+
+There are sure plenty of them. Just open an issue in Github.
+
 ## Colaboration
 
 This project is licensed MIT, so you know the drill. Fork, open a pull request, and make sure to have up-to-date tests with (ideally) a 100% coverage.
+
+For development purposes, make sure to have `pipenv` installed and run:
+
+```
+pipven install --dev
+```
+
+Then add your contributions, and make sure to run:
+
+```
+make test
+```
+
+Definitely you should pass all tests, and ideally also have 100% coverage. If that's case, open a pull request and I'm almost definitely will merge it.
+
+## License
 
 > MIT License
 >
