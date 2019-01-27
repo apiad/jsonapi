@@ -4,7 +4,7 @@ python:
   - "3.6"
 before_install:
     - pip install pipenv
-    - pipenv install
+    - pipenv install --dev
 script:
     - python -m pytest
 after_success:
