@@ -1,12 +1,13 @@
 language: python
 python:
+  - "3.3"
   - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
 before_install:
     - pip install pytest pytest-cov
     - pip install coveralls
-    - pip install flask
 script:
     - python -m pytest
 after_success:
