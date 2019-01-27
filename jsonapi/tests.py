@@ -37,7 +37,7 @@ def test_api_return_not_supported():
 
     try:
         api({'not_supported'})
-        assert False
+        assert False # pragma: no cover
     except TypeError as e:
         assert 'is not supported' in str(e)
 
@@ -47,7 +47,7 @@ def test_api_return_not_supported_query():
 
     try:
         api({'not_supported': {'$x': A()}})
-        assert False
+        assert False # pragma: no cover
     except TypeError as e:
         assert 'is not supported' in str(e)
 
@@ -60,7 +60,7 @@ def test_jsonobj_repr():
 def test_jsonobj_serialize_wrong_type():
     try:
         obj = JsonObj(a=A())
-        assert False
+        assert False # pragma: no cover
     except TypeError as e:
         assert 'is not supported' in str(e)
 
@@ -69,7 +69,7 @@ def test_jsonobj_serialize_wrong_type():
 
     try:
         obj.json()
-        assert False
+        assert False # pragma: no cover
     except TypeError as e:
         assert 'is not supported' in str(e)
 
