@@ -2,7 +2,7 @@ build:
 	python setup.py sdist bdist_wheel
 
 upload-pypi:
-	python -m twine upload --repository-url dist/*
+	python -m twine upload dist/*
 
 upload-test:
 	python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
@@ -13,6 +13,3 @@ clean:
 
 test:
 	python -m pytest
-
-test-install:
-	python -m venv ~/test-venv && ~/test-venv/bin/python -m pip install jsonapi-simple && ~/test-venv/bin/python -c "import jsonapi; print(jsonapi.__version__)" && rm -rf ~/test-venv
