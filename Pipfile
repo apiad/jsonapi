@@ -9,6 +9,7 @@ pytest-cov = "*"
 coveralls = "*"
 
 [packages]
+pytest-cov = "*"
 
 [requires]
 python_version = "3.6"
